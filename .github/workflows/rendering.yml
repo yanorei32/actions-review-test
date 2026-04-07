@@ -89,17 +89,22 @@ jobs:
           git commit -m "Add $BRANCH_NAME"
           git remote add origin https://EEWBot:${{ secrets.EEWBOT_OBJECT_STORAGE_WRITER_SECRET }}@github.com/EEWBot/object-storage
           git push -u origin "$BRANCH_NAME"
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "IMAGES_BASE=https://raw.githubusercontent.com/EEWBot/object-storage/refs/heads/$BRANCH_NAME" >> $GITHUB_ENV
           cd ../
 
-      # - name: Comment with image
-      #   uses: actions/github-script@v8.0.0
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       await github.rest.issues.createComment({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         issue_number: context.issue.number,
-      #         body: `Hello World\n[result](${process.env.URLS})`
-      #       })
+      - name: Comment with image
+        uses: actions/github-script@v8.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            let body = "";
+            for (const filename of ["example.0.png", "example.1.png", "example.2.png"]) {
+              body += `# ${filename}\n`;
+              body += `![](${process.env.IMAGES_BASE}/${filename})\n`;
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body,
+            })
