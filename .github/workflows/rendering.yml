@@ -10,6 +10,20 @@ jobs:
       - uses: actions/checkout@v6.0.2
         with:
           repository: "EEWBot/eew-renderer"
+          submodules: true
+
+      - name: prepare dependencies
+        run: |
+          sudo apt-get update -y && sudo apt-get install -y xvfb protobuf-compiler
+
+      - run: |
+          sudo curl "https://dl.min.io/client/mc/release/linux-${{ matrix.mcarch }}/mc" -o /bin/mc
+          sudo chmod +x /bin/mc
+          mc alias set yr32srv https://rustfs-s3.yr32.net act-review-ci "${{ secrets.YR32RUSTFS_EEWBOT_CI_SECRET }}"
+          pushd assets/shapefile/
+          mc get yr32srv/eewbot/shapefiles_v1.zip ./shapefiles_v1.zip
+          unzip -o ./shapefiles_v1.zip
+          popd
 
       - name: Get Rust toolchain
         id: toolchain
@@ -18,10 +32,6 @@ jobs:
 
       - name: cache dependencies
         uses: Swatinem/rust-cache@v2.9.1
-
-      - name: prepare dependencies
-        run: |
-          sudo apt-get update -y && sudo apt-get install -y xvfb protobuf-compiler
 
       - name: prepare eew-renderer-url
         run: |
