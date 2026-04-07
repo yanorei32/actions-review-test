@@ -75,6 +75,7 @@ jobs:
         run: |
           for f in *.png; do
             curl -X POST \
+              --http2 \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "Content-Type: image/png" \
               --data-binary "@$f" \
