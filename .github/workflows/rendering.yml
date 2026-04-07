@@ -29,8 +29,9 @@ jobs:
 
       - name: rendering
         run: |
+          cargo build --release
           Xvfb :0 -listen tcp -ac -screen 0 1024x768x24 &
-          DISPLAY=:0 cargo run -- --release &
+          DISPLAY=:0 cargo run --release &
           sleep 3;
           DEMO_QUAKE_PREFECTURE_V0_BASE65536_URL=$(\
             eew-renderer-url \
