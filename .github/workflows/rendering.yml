@@ -19,9 +19,9 @@ jobs:
       - name: cache dependencies
         uses: Swatinem/rust-cache@v2.9.1
 
-      - name: prepare xvfb
+      - name: prepare dependencies
         run: |
-          sudo apt-get update -y && sudo apt-get install -y xvfb
+          sudo apt-get update -y && sudo apt-get install -y xvfb protobuf-compiler
 
       - name: prepare eew-renderer-url
         run: |
