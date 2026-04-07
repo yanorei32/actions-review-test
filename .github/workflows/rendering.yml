@@ -100,7 +100,7 @@ jobs:
             let body = "";
             for (const filename of ["example.0.png", "example.1.png", "example.2.png", "example.3.png"]) {
               body += `# ${filename}\n`;
-              body += `![](${process.env.IMAGES_BASE}/${filename})\n`;
+              body += `<img src="${process.env.IMAGES_BASE}/${filename}" width="50%">\n`;
             }
             await github.rest.issues.createComment({
               owner: context.repo.owner,
