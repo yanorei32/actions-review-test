@@ -87,6 +87,12 @@ jobs:
               > "$f.json"
           done
 
+      - name: Debug PRINT JSON
+        run: |
+          for f in *.json; do
+            cat "$f"
+          done
+
       - name: Extract URL
         run: |
           echo "URLS=$(
