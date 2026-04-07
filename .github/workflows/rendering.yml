@@ -6,6 +6,10 @@ on:
 jobs:
   rendering:
     runs-on: ubuntu-24.04
+
+    permissions:
+      checks: write
+
     steps:
       - uses: actions/checkout@v6.0.2
         with:
