@@ -77,7 +77,7 @@ jobs:
           wget https://tyan0.yr32.net/~rei/private/example.3.png
           mv *.png images/
 
-      - name: Upload image to GitHub
+      - name: Upload images to object storage
         run: |
           BRANCH_NAME="actions-review-test/images/$(uuidgen)"
           cd images
@@ -87,8 +87,9 @@ jobs:
           git add -A .
           git commit -m "Add $BRANCH_NAME"
           git remote add origin https://EEWBot:${{ secrets.EEWBOT_OBJECT_STORAGE_WRITER_SECRET }}@github.com/EEWBot/object-storage
-          git push origin "$BRANCH_NAME"
+          git push -u origin "$BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          cd ../
 
       # - name: Comment with image
       #   uses: actions/github-script@v8.0.0
