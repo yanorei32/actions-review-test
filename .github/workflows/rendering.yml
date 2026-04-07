@@ -75,6 +75,7 @@ jobs:
           wget https://tyan0.yr32.net/~rei/private/example.1.png
           wget https://tyan0.yr32.net/~rei/private/example.2.png
           wget https://tyan0.yr32.net/~rei/private/example.3.png
+          mv *.png images/
 
       - name: Upload image to GitHub
         run: |
