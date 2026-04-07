@@ -21,7 +21,7 @@ jobs:
 
       - name: prepare xvfb
         run: |
-          apt-get update -y && apt-get install -y xvfb
+          sudo apt-get update -y && sudo apt-get install -y xvfb
 
       - name: prepare eew-renderer-url
         run: |
