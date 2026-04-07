@@ -17,11 +17,11 @@ jobs:
           sudo apt-get update -y && sudo apt-get install -y xvfb protobuf-compiler
 
       - run: |
-          sudo curl "https://dl.min.io/client/mc/release/linux-${{ matrix.mcarch }}/mc" -o /bin/mc
+          sudo curl "https://dl.min.io/client/mc/release/linux-amd64/mc" -o /bin/mc
           sudo chmod +x /bin/mc
-          /bin/mc alias set yr32srv https://rustfs-s3.yr32.net act-review-ci "${{ secrets.YR32RUSTFS_EEWBOT_CI_SECRET }}"
+          mc alias set yr32srv https://rustfs-s3.yr32.net act-review-ci "${{ secrets.YR32RUSTFS_EEWBOT_CI_SECRET }}"
           pushd assets/shapefile/
-          /bin/mc get yr32srv/eewbot/shapefiles_v1.zip ./shapefiles_v1.zip
+          mc get yr32srv/eewbot/shapefiles_v1.zip ./shapefiles_v1.zip
           unzip -o ./shapefiles_v1.zip
           popd
 
