@@ -84,6 +84,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git init
+          git checkout --orphan "$BRANCH_NAME"
           git add -A .
           git commit -m "Add $BRANCH_NAME"
           git remote add origin https://EEWBot:${{ secrets.EEWBOT_OBJECT_STORAGE_WRITER_SECRET }}@github.com/EEWBot/object-storage
