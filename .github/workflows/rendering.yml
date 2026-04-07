@@ -70,6 +70,7 @@ jobs:
       #     file demo_quake_prefecture_v0_base65536.png
       - name: download dummy file
         run: |
+          mkdir images
           wget https://tyan0.yr32.net/~rei/private/example.0.png
           wget https://tyan0.yr32.net/~rei/private/example.1.png
           wget https://tyan0.yr32.net/~rei/private/example.2.png
@@ -77,38 +78,23 @@ jobs:
 
       - name: Upload image to GitHub
         run: |
-          for f in *.png; do
-            curl -X POST \
-              --http1.1 \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Content-Type: image/png" \
-              --data-binary "@$f" \
-              https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments/assets \
-              > "$f.json"
-          done
+          BRANCH_NAME="actions-review-test/images/$(uuidgen)"
+          cd images
+          git init
+          git add -A .
+          git commit -m "Add $BRANCH_NAME"
+          git remote add origin https://EEWBot:${{ secrets.EEWBOT_OBJECT_STORAGE_WRITER_SECRET }}@github.com/EEWBot/object-storage
+          git push origin "$BRANCH_NAME"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
-      - name: Debug PRINT JSON
-        run: |
-          for f in *.json; do
-            cat "$f"
-          done
-
-      - name: Extract URL
-        run: |
-          echo "URLS=$(
-            for f in *.json; do
-              jq -r '.url' "$f"; echo ",";
-            done | tr -d '\n'
-          )" >> $GITHUB_ENV
-
-      - name: Comment with image
-        uses: actions/github-script@v8.0.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: `Hello World\n[result](${process.env.URLS})`
-            })
+      # - name: Comment with image
+      #   uses: actions/github-script@v8.0.0
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       await github.rest.issues.createComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         issue_number: context.issue.number,
+      #         body: `Hello World\n[result](${process.env.URLS})`
+      #       })
