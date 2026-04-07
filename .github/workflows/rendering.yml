@@ -98,7 +98,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             let body = "";
-            for (const filename of ["example.0.png", "example.1.png", "example.2.png"]) {
+            for (const filename of ["example.0.png", "example.1.png", "example.2.png", "example.3.png"]) {
               body += `# ${filename}\n`;
               body += `![](${process.env.IMAGES_BASE}/${filename})\n`;
             }
